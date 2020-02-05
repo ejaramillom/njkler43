@@ -2,18 +2,12 @@ import React, { Component } from 'react';
 import posts from './posts'
 // Modifica el componente App para implementar la funcionalidad requerida
 
-function searchFilter(term) {
-  return function(x){
-    return x.first.toLowerCase().includes(term.toLowerCase()) || !term;
-  }
-}
-
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       posts: posts,
-      term: ''
+      term: ""
     }
     this.updateTerm = this.updateTerm.bind(this);
 
@@ -23,8 +17,12 @@ class App extends Component {
       term: event.target.value
     });
   }
+
   render() {
     const {posts, term} = this.state;
+    const filteredPosts = posts.filter( post => {
+      return post.title.toLowerCase().indexOf(term.toLowerCase()) !== -1;
+    });
     return (
       <div>
         <div className="filter">
@@ -37,7 +35,7 @@ class App extends Component {
         </div>
         <ul>
         {
-          posts.filter(searchFilter(term)).map( post =>
+          filteredPosts.map( post =>
           <li>
             <a href={post.url}><img src={post.image } /></a>
             <p>{ post.title }</p>
